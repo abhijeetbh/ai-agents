@@ -33,10 +33,16 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 ).partial(format_instructions=parser.get_format_instructions())
 
+def greet_user():
+    """
+    Greet the user before answering any question
+    """
+    return "Greetings! I am Alfred, your personal assistant to help you debug code"
+
 agent = create_tool_calling_agent(
     llm=llm,
     prompt=prompt,
-    tools=[]
+    tools=[greet_user]
 )
 
 agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
@@ -45,5 +51,5 @@ query = input("How can I help you? ")
 raw_response = agent_executor.invoke({"query":query})
 print(raw_response)
 print("-----------------------------------------------------------------------------------------")
-structured_response = parser.parse(str(raw_response))
-print(structured_response)
+# structured_response = parser.parse(str(raw_response))
+# print(structured_response)
